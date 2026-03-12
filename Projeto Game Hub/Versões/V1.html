@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Jogos Fictícios</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0d1117;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px;
+        }
+        h1 { color: #58a6ff; }
+        .game-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .game-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .game-card:hover {
+            transform: translateY(-10px);
+            border-color: #58a6ff;
+        }
+        .btn-steam {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .btn-steam:hover {
+            background-color: #0056b3;
+        }
+        span.tag {
+            font-size: 0.8em;
+            background: #238636;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎮 Launcher de Testes</h1>
+    <p>Selecione um jogo para abrir na Steam</p>
+
+    <div class="game-container">
+        <div class="game-card">
+            <span class="tag">Teste Alfa</span>
+            <h2>CyberShield: Protocol 0</h2>
+            <p>Um simulador de invasão em tempo real onde você protege redes neurais.</p>
+            <a href="https://store.steampowered.com/app/1091500/Cyberpunk_2077/" target="_blank" class="btn-steam">Ver na Steam</a>
+        </div>
+
+        <div class="game-card" style="opacity: 0.5;">
+            <h2>Em breve...</h2>
+            <p>Próximo projeto em desenvolvimento.</p>
+        </div>
+    </div>
+
+</body>
+</html>

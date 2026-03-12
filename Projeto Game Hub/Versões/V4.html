@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevShare BR | Launcher Pro</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --accent: #58a6ff;
+            --success: #238636;
+        }
+
+        /* Forçando o fundo escuro do V2.txt */
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #0d1117 !important; 
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .filters {
+            margin-bottom: 30px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            background: #21262d;
+            border: 1px solid #30363d;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .filter-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .game-card {
+            background-color: var(--card-bg);
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .game-card:hover {
+            transform: scale(1.03);
+            border-color: var(--accent);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        .game-img {
+            height: 160px;
+            background-size: cover;
+            background-position: center;
+            background-color: #21262d;
+            transition: 0.5s;
+        }
+
+        .game-info { padding: 20px; }
+
+        .tag {
+            font-size: 11px;
+            background: var(--success);
+            padding: 3px 10px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-steam { background-color: var(--accent); color: white; }
+        .btn-copy { background-color: #30363d; color: #c9d1d9; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <h1>🎮 Launcher de Testes</h1>
+    
+    <div class="filters">
+        <button class="filter-btn active" onclick="filterGames('all', this)">Todos</button>
+        <button class="filter-btn" onclick="filterGames('rpg', this)">RPG</button>
+        <button class="filter-btn" onclick="filterGames('action', this)">Ação</button>
+        <button class="filter-btn" onclick="filterGames('horror', this)">Horror</button>
+
+    </div>
+
+    <div class="game-container" id="vitrine"></div>
+
+    <script>
+        const listaDeJogos = [
+            {
+                titulo: "CyberShield: Protocol 0",
+                desc: "Infiltração tática em redes neurais.",
+                categoria: "rpg",
+                status: "Alpha",
+                appid: "1091500",
+                img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/capsule_616x353.jpg"
+            },
+            {
+                titulo: "Wyvern Hunter X",
+                desc: "Caçada épica em biomas procedurais.",
+                categoria: "action",
+                status: "Beta",
+                appid: "1446780",
+                img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1446780/capsule_616x353.jpg"
+            },
+            {
+                titulo: "Mamador sem Alma",
+                desc: "Caçada épica de pirocas.",
+                categoria: "horror",
+                status: "Beta",
+                appid: "6767676",
+                img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0w-3yWWNPasmTMQ5B9D62-At-I2JVwYAS5w&s"
+            }
+
+        ];
+
+        function renderizar() {
+            const container = document.getElementById('vitrine');
+            if (!container) return; // Segurança extra
+
+            container.innerHTML = listaDeJogos.map(jogo => `
+                <div class="game-card" data-category="${jogo.categoria}">
+                    <div class="game-img" style="background-image: url('${jogo.img}');"></div>
+                    <div class="game-info">
+                        <span class="tag">${jogo.status}</span>
+                        <h3>${jogo.titulo}</h3>
+                        <p>${jogo.desc}</p>
+                        <div class="actions">
+                            <a href="https://store.steampowered.com/app/${jogo.appid}/" target="_blank" class="btn btn-steam">Steam</a>
+                            <button class="btn btn-copy" onclick="copyId('${jogo.appid}')">ID: ${jogo.appid}</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterGames(category, btn) {
+            const cards = document.querySelectorAll('.game-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            buttons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        function copyId(id) {
+            navigator.clipboard.writeText(id);
+            alert("ID " + id + " copiado!");
+        }
+
+        // Garante que o script rode apenas quando o HTML estiver pronto
+        window.onload = renderizar;
+    </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+[
+    {
+        "titulo": "CyberShield: Protocol 0",
+        "desc": "Defesa tática em infraestruturas críticas.",
+        "categoria": "rpg",
+        "status": "Alpha",
+        "appid": "1091500",
+        "apoio": "#",
+        "img": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/capsule_616x353.jpg"
+    },
+    {
+        "titulo": "Sertão Quest",
+        "desc": "RPG folclórico em terras nordestinas.",
+        "categoria": "rpg",
+        "status": "Beta",
+        "appid": "1446780",
+        "apoio": "#",
+        "img": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1446780/capsule_616x353.jpg"
+    }
+]

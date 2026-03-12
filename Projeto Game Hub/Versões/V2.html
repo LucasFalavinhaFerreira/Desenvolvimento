@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Launcher de Testes Pro</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --accent: #58a6ff;
+            --success: #238636;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+            margin: 0;
+        }
+
+        /* Filtros */
+        .filters {
+            margin-bottom: 30px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            background: #21262d;
+            border: 1px solid #30363d;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        /* Grid de Jogos */
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .game-card {
+            background-color: var(--card-bg);
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .game-card:hover {
+            transform: scale(1.03);
+            border-color: var(--accent);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        /* Imagem de Fundo (Hover Effect) */
+        .game-img {
+            height: 160px;
+            background-size: cover;
+            background-position: center;
+            background-color: #21262d;
+            transition: 0.5s;
+            filter: grayscale(80%);
+        }
+
+        .game-card:hover .game-img {
+            filter: grayscale(0%);
+            transform: scale(1.1);
+        }
+
+        .game-info {
+            padding: 20px;
+        }
+
+        .tag {
+            font-size: 11px;
+            background: var(--success);
+            padding: 3px 10px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-steam { background-color: var(--accent); color: white; }
+        .btn-copy { background-color: #30363d; color: #c9d1d9; }
+
+        .btn:hover { opacity: 0.9; }
+
+        /* Esconder cards filtrados */
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <h1>🎮 Launcher de Testes</h1>
+    
+    <div class="filters">
+        <button class="filter-btn active" onclick="filterGames('all')">Todos</button>
+        <button class="filter-btn" onclick="filterGames('rpg')">RPG</button>
+        <button class="filter-btn" onclick="filterGames('action')">Ação</button>
+    </div>
+
+    <div class="game-container">
+        <div class="game-card" data-category="rpg">
+            <div class="game-img" style="background-image: url('https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/capsule_616x353.jpg');"></div>
+            <div class="game-info">
+                <span class="tag">Alpha</span>
+                <h3>CyberShield: Protocol 0</h3>
+                <p>Infiltração tática em redes neurais.</p>
+                <div class="actions">
+                    <a href="https://store.steampowered.com/app/1091500/" target="_blank" class="btn btn-steam">Steam</a>
+                    <button class="btn btn-copy" onclick="copyId('1091500')">ID: 1091500</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-card" data-category="action">
+            <div class="game-img" style="background-image: url('https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1446780/capsule_616x353.jpg');"></div>
+            <div class="game-info">
+                <span class="tag">Beta</span>
+                <h3>Wyvern Hunter X</h3>
+                <p>Caçada épica em biomas procedurais.</p>
+                <div class="actions">
+                    <a href="https://store.steampowered.com/app/1446780/" target="_blank" class="btn btn-steam">Steam</a>
+                    <button class="btn btn-copy" onclick="copyId('1446780')">ID: 1446780</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função de Filtro
+        function filterGames(category) {
+            const cards = document.querySelectorAll('.game-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        // Função de Copiar ID
+        function copyId(id) {
+            navigator.clipboard.writeText(id);
+            alert("ID " + id + " copiado para a área de transferência!");
+        }
+    </script>
+</body>
+</html>

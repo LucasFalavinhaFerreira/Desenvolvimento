@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevShare BR | Vitrine Premium</title>
+    <style>
+        /* Variáveis de Cores */
+        :root {
+            --bg-color: #0d1117;
+            --glass-bg: rgba(22, 27, 34, 0.8);
+            --accent-blue: #58a6ff;
+            --accent-green: #00ff88;
+            --text-main: #f0f6fc;
+            --text-dim: #8b949e;
+        }
+
+        /* Scrollbar Personalizada */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-blue); }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: radial-gradient(circle at top center, #161b22 0%, #0d1117 100%);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 20px;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        h1 { 
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #58a6ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle { color: var(--text-dim); margin-bottom: 50px; font-weight: 300; }
+
+        /* Estilização dos Filtros */
+        .filters {
+            margin-bottom: 40px;
+            display: flex;
+            gap: 15px;
+            background: var(--glass-bg);
+            padding: 8px;
+            border-radius: 30px;
+            border: 1px solid #30363d;
+            backdrop-filter: blur(10px);
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 600;
+        }
+
+        .filter-btn.active {
+            background: var(--accent-blue);
+            color: white;
+            box-shadow: 0 0 15px rgba(88, 166, 255, 0.4);
+        }
+
+        /* Grid e Cards */
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .game-card {
+            background: var(--glass-bg);
+            border: 1px solid #30363d;
+            border-radius: 16px;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--accent-green);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+
+        .game-img {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            transition: 0.6s;
+            position: relative;
+        }
+
+        .game-card:hover .game-img { transform: scale(1.1); }
+
+        /* Badge Glow */
+        .tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 10px;
+            background: var(--accent-green);
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            font-weight: 900;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        .game-info { padding: 25px; }
+        .game-info h3 { margin: 0 0 10px 0; font-size: 1.4rem; letter-spacing: -0.5px; }
+        .game-info p { color: var(--text-dim); font-size: 0.95rem; line-height: 1.5; }
+
+        /* Botões Estilizados */
+        .actions { display: flex; gap: 12px; margin-top: 20px; }
+        
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            text-align: center;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-steam { 
+            background: linear-gradient(45deg, #007bff, #58a6ff);
+            color: white; 
+        }
+
+        .btn-copy { 
+            background: #21262d; 
+            color: var(--text-dim);
+            border: 1px solid #30363d;
+        }
+
+        .btn:hover { filter: brightness(1.2); transform: translateY(-2px); }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <h1>DevShare BR</h1>
+    <p class="subtitle">A vitrine dos desenvolvedores independentes nacionais</p>
+    
+    <div class="filters">
+        <button class="filter-btn active" onclick="filterGames('all', this)">Todos</button>
+        <button class="filter-btn" onclick="filterGames('rpg', this)">RPG</button>
+        <button class="filter-btn" onclick="filterGames('action', this)">Ação</button>
+        <button class="filter-btn" onclick="filterGames('horror', this)">Terror</button>
+    </div>
+
+    <div class="game-container" id="vitrine"></div>
+
+    <script>
+        const listaDeJogos = [
+            {
+                titulo: "CyberShield: Protocol 0",
+                desc: "Infiltração tática em redes neurais brasileiras.",
+                categoria: "rpg",
+                status: "Alpha",
+                appid: "1091500",
+                img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/capsule_616x353.jpg"
+            },
+            {
+                titulo: "Wyvern Hunter X",
+                desc: "Caçada épica em biomas tropicais procedurais.",
+                categoria: "action",
+                status: "Beta",
+                appid: "1446780",
+                img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1446780/capsule_616x353.jpg"
+            },
+            {
+                titulo: "El Mamador das 23:30",
+                desc: "Caçada épica em busca da mamada perfeita.",
+                categoria: "horror",
+                status: "Beta",
+                appid: "1446780",
+                img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZL540ojtkiO-prlQZZUqBxATpjcglMa_ySw&s"
+            }
+
+        ];
+
+        function renderizar() {
+            const container = document.getElementById('vitrine');
+            if (!container) return;
+
+            container.innerHTML = listaDeJogos.map(jogo => `
+                <div class="game-card" data-category="${jogo.categoria}">
+                    <div class="game-img" style="background-image: url('${jogo.img}');">
+                        <span class="tag">${jogo.status}</span>
+                    </div>
+                    <div class="game-info">
+                        <h3>${jogo.titulo}</h3>
+                        <p>${jogo.desc}</p>
+                        <div class="actions">
+                            <a href="https://store.steampowered.com/app/${jogo.appid}/" target="_blank" class="btn btn-steam">Abrir na Steam</a>
+                            <button class="btn btn-copy" onclick="copyId('${jogo.appid}')">ID: ${jogo.appid}</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterGames(category, btn) {
+            const cards = document.querySelectorAll('.game-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            buttons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        function copyId(id) {
+            navigator.clipboard.writeText(id);
+            alert("AppID " + id + " copiado com sucesso!");
+        }
+
+        window.onload = renderizar;
+    </script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevShare BR | Plataforma de Projetos Nacionais</title>
+    <style>
+        :root {
+            --bg: #0b0e14;
+            --surface: #1c2128;
+            --accent: #00ff88; /* Verde neon para dar destaque aos devs */
+            --text: #adbac7;
+            --header: #58a6ff;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* Navbar */
+        nav {
+            background: rgba(13, 17, 23, 0.9);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #30363d;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo { font-weight: 900; color: var(--accent); font-size: 1.5rem; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 20px; font-size: 0.9rem; }
+
+        /* Hero Section */
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(180deg, #161b22 0%, var(--bg) 100%);
+        }
+
+        header h1 { color: white; font-size: 2.5rem; margin-bottom: 10px; }
+        header p { max-width: 600px; margin: 0 auto 30px; }
+
+        /* Container de Projetos */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        /* Card de Projeto Estilo Plataforma */
+        .project-card {
+            background: var(--surface);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #30363d;
+            transition: 0.3s;
+        }
+
+        .project-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .thumb {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            color: var(--accent);
+            font-weight: bold;
+            border: 1px solid var(--accent);
+        }
+
+        .card-body { padding: 20px; }
+        .card-body h3 { margin: 0 0 5px 0; color: white; }
+        .author { font-size: 0.85rem; color: #768390; margin-bottom: 15px; display: block; }
+
+        .btn-group { display: flex; gap: 10px; }
+        .btn {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-primary { background: var(--accent); color: #000; }
+        .btn-secondary { background: #30363d; color: white; }
+        .btn:hover { filter: brightness(1.1); }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">DevShare_BR</div>
+        <div class="nav-links">
+            <a href="#">Explorar</a>
+            <a href="#">Comunidade</a>
+            <a href="#" style="color: var(--accent);">+ Submeter Projeto</a>
+        </div>
+    </nav>
+
+    <header>
+        <h1>Vitrine de Devs Brasileiros</h1>
+        <p>Apoie a indústria nacional. Descubra jogos, softwares e ferramentas criadas por desenvolvedores locais.</p>
+    </header>
+
+    <div class="container">
+        <div class="grid">
+            
+            <div class="project-card">
+                <div class="thumb" style="background-image: url('https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/capsule_616x353.jpg');">
+                    <span class="status-badge">ALPHA DISPONÍVEL</span>
+                </div>
+                <div class="card-body">
+                    <h3>CyberShield BR</h3>
+                    <span class="author">por @JoaoStohler_Dev</span>
+                    <p>Simulador de defesa cibernética em infraestruturas críticas brasileiras.</p>
+                    <div class="btn-group">
+                        <a href="https://store.steampowered.com/app/1091500/" class="btn btn-primary">Testar na Steam</a>
+                        <a href="#" class="btn btn-secondary">Documentação</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="thumb" style="background-image: url('https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1446780/capsule_616x353.jpg');">
+                    <span class="status-badge">PROTÓTIPO</span>
+                </div>
+                <div class="card-body">
+                    <h3>Sertão Quest</h3>
+                    <span class="author">por @MariaGames</span>
+                    <p>Um RPG tático ambientado no folclore do nordeste brasileiro.</p>
+                    <div class="btn-group">
+                        <a href="https://store.steampowered.com/app/1446780/" class="btn btn-primary">Página Steam</a>
+                        <a href="#" class="btn btn-secondary">Apoiar Projeto</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
