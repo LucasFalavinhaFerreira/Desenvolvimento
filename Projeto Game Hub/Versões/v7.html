@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alt Play | Hub Premium</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --glass-bg: rgba(22, 27, 34, 0.85); 
+            --accent-orange: #ff8c00; 
+            --accent-gold: #ffcc00;
+            --btn-steam: #21262d;
+            --text-main: #f0f6fc;
+            --text-dim: #8b949e;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { width: 100%; overflow-x: hidden; scroll-behavior: smooth; background-color: #0d1117; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: radial-gradient(circle at top center, #1a1a1a 0%, #0d1117 100%);
+            color: var(--text-main);
+            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+        }
+
+        nav {
+            position: fixed; top: 0; width: 100%;
+            background: var(--glass-bg); backdrop-filter: blur(20px);
+            border-bottom: 1px solid #30363d;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 50px; z-index: 1000;
+        }
+        .nav-brand { display: flex; align-items: center; gap: 12px; }
+        .nav-brand img { height: 40px; border-radius: 8px; }
+        .logo { font-weight: 900; font-size: 1.6rem; color: var(--accent-orange); letter-spacing: -1px; }
+        
+        .nav-links { display: flex; gap: 25px; align-items: center; }
+        .nav-links a { color: #fff !important; text-decoration: none; font-weight: 600; transition: 0.3s; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; }
+        .nav-links a:hover { color: var(--accent-orange) !important; }
+
+        .hero {
+            width: 100%; height: 400px;
+            background: linear-gradient(rgba(13, 17, 23, 0.6), rgba(13, 17, 23, 1)), 
+                        url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover; background-position: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+        }
+        .hero h1 { font-size: 4rem; background: linear-gradient(90deg, var(--accent-orange), var(--accent-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .controls-container { width: 100%; display: flex; justify-content: center; margin-top: -50px; z-index: 10; padding: 0 20px; }
+        .controls {
+            background: var(--glass-bg); padding: 25px; border-radius: 20px; border: 1px solid #444; backdrop-filter: blur(20px);
+            width: 100%; max-width: 800px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+        #searchBar { width: 100%; padding: 14px 20px; border-radius: 30px; border: 1px solid #30363d; background: rgba(0, 0, 0, 0.3); color: white; outline: none; font-size: 1rem; }
+
+        .game-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; width: 90%; max-width: 1200px; margin: 60px auto; padding-bottom: 100px; }
+        
+        /* CARD COM EFEITOS RESTAURADOS */
+        .game-card { 
+            background: var(--glass-bg); 
+            border: 1px solid #30363d; 
+            border-radius: 20px; 
+            overflow: hidden; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            position: relative; 
+            backdrop-filter: blur(10px); 
+        }
+        .game-card:hover { transform: translateY(-10px) scale(1.02); border-color: var(--accent-orange); box-shadow: 0 25px 50px rgba(0,0,0,0.7); }
+        
+        .game-img { height: 220px; background-size: cover; background-position: center; transition: 0.6s; }
+        .game-card:hover .game-img { transform: scale(1.08); }
+        
+        .tag { position: absolute; top: 15px; right: 15px; background: var(--accent-gold); color: #000; padding: 5px 15px; border-radius: 20px; font-size: 11px; font-weight: 900; animation: pulseGlow 2s infinite; z-index: 5; }
+
+        .game-info { padding: 25px; }
+        .card-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 0.85rem; color: var(--accent-orange); font-weight: bold; }
+        .game-info h3 { margin-bottom: 10px; font-size: 1.5rem; }
+        .game-info p { color: var(--text-dim); font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px; height: 50px; overflow: hidden; }
+
+        .actions { display: flex; flex-direction: column; gap: 12px; }
+        .row-btns { display: flex; gap: 12px; }
+        .btn { padding: 14px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 13px; text-align: center; border: none; cursor: pointer; transition: 0.3s; }
+        .btn-steam { background: var(--btn-steam); color: white; flex: 2; border: 1px solid #333; }
+        .btn-support { background: var(--accent-orange); color: #000; flex: 1; }
+        .btn-copy { background: #161b22; color: var(--text-dim); border: 1px solid #30363d; width: 100%; margin-top: 5px; }
+
+        .hidden { display: none !important; }
+
+        footer { width: 100%; padding: 50px; background: var(--glass-bg); border-top: 1px solid #30363d; text-align: center; margin-top: auto; }
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 5px rgba(255, 204, 0, 0.4); } 50% { box-shadow: 0 0 15px rgba(255, 204, 0, 0.7); } 100% { box-shadow: 0 0 5px rgba(255, 204, 0, 0.4); } }
+    </style>
+</head>
+<body>
+<nav>
+    <div class="nav-brand">
+        <img src="girafa.jpg" alt="Girafa">
+        <div class="logo">ALT PLAY</div>
+    </div>
+    <div class="nav-links">
+        <a href="v7.html"><i class="fas fa-home"></i> Home</a>
+        <a href="games.html"><i class="fas fa-gamepad"></i> Games</a>
+        <a href="software.html"><i class="fas fa-code"></i> Software</a>
+        <a href="comunidade.html"><i class="fas fa-users"></i> Comunidade</a>
+        <a href="sobre.html"><i class="fas fa-info-circle"></i> Sobre</a>
+    </div>
+</nav>    <div class="hero"><h1>ALT PLAY</h1><p>Tudo o que você procura em um só hub.</p></div>
+    <div class="controls-container"><div class="controls"><input type="text" id="searchBar" placeholder="Pesquise por Nome, Descrição ou ID..." onkeyup="filtrar()"></div></div>
+    <div class="game-container" id="vitrine"></div>
+    <footer><div class="logo" style="margin-bottom: 10px;">ALT PLAY</div><p style="color: var(--text-dim); font-size: 0.8rem;">Developed by <span style="color:var(--accent-gold)">Void & Cabello</span></p></footer>
+    
+    <script>
+        const listaTotal = [
+            { titulo: "CyberShield", desc: "Defesa tática em infraestruturas brasileiras.", status: "Alpha", id: "1091500", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/capsule_616x353.jpg", cat: "GAME" },
+            { titulo: "Sertão Quest", desc: "RPG inspirado no folclore nordestino.", status: "Beta", id: "1446780", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1446780/capsule_616x353.jpg", cat: "GAME" },
+            { titulo: "Alt Automation", desc: "Scripts para automação de tarefas e status.", status: "Stable", id: "v1.0.4", img: "https://images.unsplash.com/photo-1518433278988-d727103ad208?q=80&w=1987", cat: "SOFT" },
+            { titulo: "Firewall Manager", desc: "Dashboard para gerenciamento de redes.", status: "Dev", id: "v0.8.2", img: "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=2070", cat: "SOFT" }
+        ];
+
+        function renderizar() {
+            document.getElementById('vitrine').innerHTML = listaTotal.map(p => `
+                <div class="game-card" 
+                     data-name="${p.titulo.toLowerCase()}" 
+                     data-desc="${p.desc.toLowerCase()}" 
+                     data-id="${p.id.toLowerCase()}">
+                    <div class="game-img" style="background-image: url('${p.img}')"><span class="tag">${p.status}</span></div>
+                    <div class="game-info">
+                        <div class="card-meta"><span><i class="fas fa-bolt"></i> ${p.cat}</span><div style="color:var(--text-dim)"><i class="fab fa-windows"></i> <i class="fab fa-steam"></i></div></div>
+                        <h3>${p.titulo}</h3><p>${p.desc}</p>
+                        <div class="actions">
+                            <div class="row-btns"><a href="#" class="btn btn-steam">Acessar</a><a href="#" class="btn btn-support">Apoiar</a></div>
+                            <button class="btn btn-copy" onclick="alert('ID Copiado!')">ID: ${p.id}</button>
+                        </div>
+                    </div>
+                </div>`).join('');
+        }
+
+        function filtrar() {
+            const busca = document.getElementById('searchBar').value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.game-card');
+            cards.forEach(card => {
+                const matches = card.getAttribute('data-name').includes(busca) || 
+                                card.getAttribute('data-desc').includes(busca) || 
+                                card.getAttribute('data-id').includes(busca);
+                card.classList.toggle('hidden', !matches);
+            });
+        }
+        document.addEventListener('DOMContentLoaded', renderizar);
+    </script>
+</body>
+</html>

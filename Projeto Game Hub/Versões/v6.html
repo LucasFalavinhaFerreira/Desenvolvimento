@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevShare BR | Explorar Projetos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* --- ESTILOS GLOBAIS VOID --- */
+        html { scroll-behavior: smooth; }
+        :root {
+            --bg-color: #0d1117;
+            --glass-bg: rgba(22, 27, 34, 0.95);
+            --accent-blue: #58a6ff;
+            --accent-green: #00ff88;
+            --accent-pink: #f78fb3;
+            --text-main: #f0f6fc;
+            --text-dim: #8b949e;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0d1117;
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Navbar (Fixo e Refinado) */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid #30363d;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+        .logo { font-weight: bold; font-size: 1.4rem; color: var(--accent-green); }
+        .nav-links a { color: #fff !important; text-decoration: none; margin-left: 20px; font-weight: 500; transition: 0.3s; }
+        .nav-links a:hover { color: var(--accent-blue); }
+
+        /* Hero Section (Fundo Dinâmico com Título Premium) */
+        .hero {
+            width: 100%;
+            height: 450px;
+            background: linear-gradient(rgba(13, 17, 23, 0.7), rgba(13, 17, 23, 1)), 
+                        url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        .hero h1 {
+            font-size: 4rem;
+            margin: 0;
+            background: linear-gradient(90deg, #58a6ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+        }
+        .hero p { font-size: 1.2rem; color: var(--text-dim); max-width: 700px; margin-top: 15px; line-height: 1.6; }
+
+        /* Controls (Busca e Filtros sobrepostos) */
+        .controls-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: -60px; /* Efeito de sobreposição */
+            z-index: 10;
+        }
+        .controls {
+            background: var(--glass-bg);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid #30363d;
+            backdrop-filter: blur(20px);
+            width: 90%;
+            max-width: 700px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+        }
+        
+        #searchBar {
+            width: 100%;
+            padding: 16px 25px;
+            border-radius: 35px;
+            border: 1px solid #30363d;
+            background: rgba(13, 17, 23, 0.9);
+            color: white;
+            outline: none;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+        #searchBar:focus { border-color: var(--accent-blue); box-shadow: 0 0 20px rgba(88, 166, 255, 0.2); }
+
+        .filters { display: flex; justify-content: center; gap: 15px; }
+        .filter-btn {
+            background: #21262d;
+            border: 1px solid #30363d;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 600;
+        }
+        .filter-btn.active { background: var(--accent-blue); border-color: var(--accent-blue); box-shadow: 0 0 15px rgba(88, 166, 255, 0.3); }
+
+        /* Grid e Cards (Com Efeito de Zoom) */
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            width: 90%;
+            max-width: 1200px;
+            margin: 80px auto;
+            padding-bottom: 120px;
+        }
+        
+        .game-card {
+            background: var(--glass-bg);
+            border: 1px solid #30363d;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+        .game-card:hover { transform: translateY(-12px) scale(1.02); border-color: var(--accent-blue); box-shadow: 0 25px 50px rgba(0,0,0,0.7); }
+
+        .game-img { height: 190px; background-size: cover; background-position: center; transition: 0.6s; }
+        .game-card:hover .game-img { transform: scale(1.1); }
+        .tag { position: absolute; top: 15px; right: 15px; background: var(--accent-green); color: #000; padding: 5px 15px; border-radius: 20px; font-size: 11px; font-weight: 900; z-index: 5; }
+
+        .game-info { padding: 25px; }
+        .card-meta { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.85rem; color: var(--accent-blue); font-weight: bold; }
+        .platform-icons i { margin-left: 10px; color: var(--text-dim); transition: 0.3s; }
+        .game-card:hover .platform-icons i { color: #fff; }
+        
+        .game-info h3 { margin: 0 0 10px 0; font-size: 1.5rem; color: #fff; }
+        .game-info p { color: var(--text-dim); font-size: 0.95rem; line-height: 1.6; margin-bottom: 25px; height: 50px; overflow: hidden; }
+
+        /* Botões */
+        .actions { display: flex; flex-direction: column; gap: 12px; }
+        .row-btns { display: flex; gap: 12px; }
+        .btn { padding: 14px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 13px; text-align: center; transition: 0.3s; border: none; cursor: pointer; }
+        .btn-steam { background: linear-gradient(45deg, #007bff, #58a6ff); color: white; flex: 2; }
+        .btn-support { background: var(--accent-pink); color: white; flex: 1; }
+        .btn-copy { background: #30363d; color: #c9d1d9; border: 1px solid #444; width: 100%; }
+        
+        .btn:hover { filter: brightness(1.2); transform: translateY(-3px); }
+        .hidden { display: none !important; }
+
+        /* --- RODAPÉ VOID CONSISTENTE (OPÇÃO VERDE) --- */
+        footer {
+            width: 100%;
+            padding: 60px 20px;
+            background: var(--glass-bg);
+            border-top: 1px solid #30363d;
+            text-align: center;
+            margin-top: auto;
+            box-sizing: border-box;
+        }
+        .footer-logo { font-weight: bold; font-size: 1.5rem; color: var(--accent-green); margin-bottom: 20px; }
+        
+        .footer-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 15px; flex-wrap: wrap; }
+        .footer-links a { color: var(--text-dim); text-decoration: none; font-size: 0.95rem; transition: 0.3s; font-weight: 500; }
+        .footer-links a:hover { color: var(--accent-blue); }
+
+        .footer-socials { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; font-size: 1.2rem; color: var(--text-dim); }
+        .footer-socials a { color: inherit; text-decoration: none; transition: 0.3s; }
+        .footer-socials a:hover { color: var(--accent-green); }
+
+        .copyright { font-size: 0.85rem; color: #484f58; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">DevShare_BR</div>
+        <div class="nav-links">
+            <a href="v6.html">Explorar</a>
+            <a href="comunidade.html">Comunidade</a>
+            <a href="sobre.html">Sobre</a>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1>DevShare BR</h1>
+        <p>A maior vitrine de projetos independentes nacionais. Explore softwares e jogos criados por brasileiros.</p>
+    </div>
+
+    <div class="controls-container">
+        <div class="controls">
+            <input type="text" id="searchBar" placeholder="Pesquisar por nome ou AppID..." onkeyup="filtrar()">
+            <div class="filters">
+                <button class="filter-btn active" onclick="setCategory('all', this)">Todos</button>
+                <button class="filter-btn" onclick="setCategory('rpg', this)">RPG</button>
+                <button class="filter-btn" onclick="setCategory('action', this)">Ação</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="game-container" id="vitrine"></div>
+
+    <footer>
+        <div class="footer-logo">DevShare_BR</div>
+        
+        <div class="footer-links">
+            <a href="#">GitHub</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">Sobre o Projeto</a>
+            <a href="#">Contato</a>
+        </div>
+
+        <div class="footer-socials">
+            <a href="https://github.com/seu-usuario-void" target="_blank" title="GitHub do Criador"><i class="fab fa-github"></i></a>
+            <a href="https://linkedin.com/in/seu-perfil-void" target="_blank" title="LinkedIn do Criador"><i class="fab fa-linkedin"></i></a>
+            <a href="#" target="_blank" title="Comunidade do Criador"><i class="fab fa-discord"></i></a>
+        </div>
+
+        <div class="copyright">
+            &copy; 2026 DevShare BR. Idealizado e Desenvolvido por <strong>Void</strong>.
+        </div>
+    </footer>
+
+    <script>
+        let categoriaAtual = 'all';
+
+        const listaDeJogos = [
+            {
+                titulo: "CyberShield: Protocol 0",
+                desc: "Defesa tática em infraestruturas críticas brasileiras.",
+                categoria: "rpg",
+                status: "Alpha",
+                appid: "1091500",
+                apoio: "#",
+                img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/capsule_616x353.jpg"
+            },
+            {
+                titulo: "Sertão Quest",
+                desc: "Aventura épica RPG inspirada no folclore nordestino.",
+                categoria: "rpg",
+                status: "Beta",
+                appid: "1446780",
+                apoio: "#",
+                img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1446780/capsule_616x353.jpg"
+            }
+        ];
+
+        function renderizar() {
+            const container = document.getElementById('vitrine');
+            if (!container) return;
+            
+            container.innerHTML = listaDeJogos.map(jogo => `
+                <div class="game-card" data-name="${jogo.titulo.toLowerCase()}" data-appid="${jogo.appid}" data-category="${jogo.categoria}">
+                    <div class="game-img" style="background-image: url('${jogo.img}')">
+                        <span class="tag">${jogo.status}</span>
+                    </div>
+                    <div class="game-info">
+                        <div class="card-meta">
+                            <span><i class="fas fa-dragon"></i> ${jogo.categoria.toUpperCase()}</span>
+                            <span>STEAM <i class="fab fa-steam"></i></span>
+                        </div>
+                        <h3>${jogo.titulo}</h3>
+                        <p>${jogo.desc}</p>
+                        <div class="actions">
+                            <div class="row-btns">
+                                <a href="https://store.steampowered.com/app/${jogo.appid}" target="_blank" class="btn btn-steam"><i class="fab fa-steam"></i> Steam</a>
+                                <a href="${jogo.apoio}" target="_blank" class="btn btn-support">Apoiar</a>
+                            </div>
+                            <button class="btn btn-copy" onclick="copyId('${jogo.appid}')">ID: ${jogo.appid}</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function setCategory(cat, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            categoriaAtual = cat;
+            filtrar();
+        }
+
+        function filtrar() {
+            const busca = document.getElementById('searchBar').value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.game-card');
+
+            cards.forEach(card => {
+                const nome = card.getAttribute('data-name');
+                const id = card.getAttribute('data-appid');
+                const cat = card.getAttribute('data-category');
+                
+                const matchesBusca = nome.includes(busca) || id.includes(busca);
+                const matchesCat = (categoriaAtual === 'all' || cat === categoriaAtual);
+
+                if (matchesBusca && matchesCat) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        function copyId(id) {
+            navigator.clipboard.writeText(id);
+            alert("AppID " + id + " copiado!");
+        }
+
+        // Garante que a renderização ocorra assim que o DOM estiver pronto
+        document.addEventListener('DOMContentLoaded', renderizar);
+    </script>
+</body>
+</html>
